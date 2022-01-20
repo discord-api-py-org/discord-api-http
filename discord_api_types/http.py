@@ -4,7 +4,7 @@ from .gateway import DiscordGateway
 from .errors import ApiError
 import asyncio
 
-class Client:
+class HttpClient:
     def __init__(self, loop:asyncio.AbstractEventLoop = None, intents:int = 513, log:bool = True):
         self.log = log
         self.intents = intents
