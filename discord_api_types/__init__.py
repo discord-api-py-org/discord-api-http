@@ -1,1 +1,1 @@
-from .client import Client
+from .http import HttpClient
