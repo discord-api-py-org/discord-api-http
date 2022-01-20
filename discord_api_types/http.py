@@ -12,57 +12,11 @@ class HttpClient:
         self.loop = asyncio.get_event_loop() if loop is None else loop
         self.ws = None
         self.session = ClientSession(loop = self.loop)
-        
-    def run(self, *args, **kwargs):
-        """
-        If you don't want use gateway.
-        Please do like this. 
-        `client.run("token", gateway = False)`
-        """
-        self.loop.run_until_complete(self.start(*args, **kwargs))
-        
+
     def print(self, name, content):
         if self.log is True:
             print(f"[{name}]:{content}")
-        
-    async def start(self, token, gateway:bool = True):
-        self.token = token
-        await self.login()
-        if gateway:
-            await self.connect()
-        
-    def dispatch(self, name, *args, **kwargs):
-        """Run a Specific function.
-        
-        Examples
-        --------
-        ```python
-        client.dispatch("on_ready")
-        
-        @client.event
-        async def on_ready():
-          print("ready")
-        ```
-        """
-        eventname = "on_" + name
-        if hasattr(self, eventname):
-            coro = getattr(self, eventname)
-            self.loop.create_task(coro(*args, **kwargs))
             
-    def event(self, coro):
-        """
-        This is send gateway event.
-        Examples:
-            client = Client()
-        
-            @client.event
-            async def on_ready():
-                print("ready")
-            client.run("ToKeN")
-        """
-        setattr(self, coro.__name__, coro)
-        return coro
-        
     async def json_or_text(self, r):
         if r.headers["Content-Type"] == "application/json":
             return await r.json()
