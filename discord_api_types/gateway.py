@@ -36,17 +36,15 @@ class KeepAlive(threading.Thread):
                     pass
 
 class DiscordGateway:
-    def __init__(self, client, ws):
+    def __init__(self, ws, **kwargs):
         self.ws = ws
-        self.token = client.token
-        self.client = client
+        self.token = kwargs.pop("token")
         self.closed = self.ws.closed
+        self.intents = 513
         
     @classmethod
-    async def start_gateway(cls, client):
-        data = await client.request("GET", "/gateway")
-        ws = await client.ws_connect(data["url"])
-        self = cls(client, ws)
+    async def start_gateway(cls, ws, token):
+        self = cls(ws, token = token)
         return self
 
     async def login(self):
@@ -54,7 +52,7 @@ class DiscordGateway:
             "op": 2,
             "d": {
                 "token": self.token,
-                "intents": self.client.intents,
+                "intents": self.intents,
                 "properties": {
                     "$os": sys.platform,
                     "$browser": "discord-api.py",
@@ -74,6 +72,9 @@ class DiscordGateway:
             elif msg.type is aiohttp.WSMsgType.ERROR:
                 raise msg.data
                 
+    async def callback(self, *args, **kwargs):
+        pass
+                
     async def event_catch(self, msg):
         data = msg.json()
         self.sequence = data["s"]
@@ -87,4 +88,4 @@ class DiscordGateway:
             elif data["op"] == 1:
                 await self.send(self.keepalive.get_data())
         else:
-            self.client.dispatch("gateway_response", data["t"], data["d"])
+            await self.callback(data["t"], data["d"])
