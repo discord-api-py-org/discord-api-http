@@ -25,7 +25,7 @@ class HttpClient:
         return await self.session.ws_connect(url)
     
     async def login(self):
-        self.user = await self.request("GET", "/users/@me")
+        return await self.request("GET", "/users/@me")
     
     async def request(self, method:str, path:str, *args, **kwargs):
         headers = {
