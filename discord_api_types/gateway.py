@@ -88,4 +88,4 @@ class DiscordGateway:
             elif data["op"] == 1:
                 await self.send(self.keepalive.get_data())
         else:
-            await self.callback(data["t"], data["d"])
+            await self.callback(data)
