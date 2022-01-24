@@ -36,15 +36,15 @@ class KeepAlive(threading.Thread):
                     pass
 
 class DiscordGateway:
-    def __init__(self, ws, **kwargs):
+    def __init__(self, ws, intents, token):
         self.ws = ws
-        self.token = kwargs.pop("token")
+        self.token = token
         self.closed = self.ws.closed
-        self.intents = 513
+        self.intents = kwargs.pop("intents", 513)
         
     @classmethod
-    async def start_gateway(cls, ws, token):
-        self = cls(ws, token = token)
+    async def start_gateway(cls, ws, token, intents = 513):
+        self = cls(ws, intents, token)
         return self
 
     async def login(self):
