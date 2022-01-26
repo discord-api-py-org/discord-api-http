@@ -9,7 +9,7 @@ except ImportError:
     import json
 
 class HttpClient:
-    def __init__(self, loop:asyncio.AbstractEventLoop = None, intents:int = 513, log:bool = True):
+    def __init__(self, loop:asyncio.AbstractEventLoop = None, intents:int = 513, log:bool = False):
         self.log = log
         self.intents = intents
         self.baseurl = "https://discord.com/api/v9"
