@@ -1,2 +1,2 @@
-from .http import HttpClient, Route
+from .http import HttpClient
 from .gateway import DiscordGateway
