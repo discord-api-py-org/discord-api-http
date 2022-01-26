@@ -3,6 +3,10 @@ from asyncio import get_event_loop, sleep
 from .gateway import DiscordGateway
 from .errors import ApiError
 import asyncio
+try:
+    import ujson as json
+except ImportError:
+    import json
 
 class HttpClient:
     def __init__(self, loop:asyncio.AbstractEventLoop = None, intents:int = 513, log:bool = True):
@@ -11,7 +15,7 @@ class HttpClient:
         self.baseurl = "https://discord.com/api/v9"
         self.loop = asyncio.get_event_loop() if loop is None else loop
         self.ws = None
-        self.session = ClientSession(loop = self.loop)
+        self.session = ClientSession(loop = self.loop, json_serialize = json.dumps)
 
     def print(self, name, content):
         if self.log is True:
