@@ -7,11 +7,6 @@ try:
     import ujson as json
 except ImportError:
     import json
-    
-class Route:
-    def __init__(self, method, path, *args, **kwargs):
-        self.method = method
-        self.path = path.format(*args, **kwargs)
 
 class HttpClient:
     def __init__(self, loop:asyncio.AbstractEventLoop = None, intents:int = 513, log:bool = True):
@@ -34,11 +29,9 @@ class HttpClient:
         return await self.session.ws_connect(url)
     
     async def login(self):
-        return await self.request(Route("GET", "/users/@me"))
+        return await self.request("GET", "/users/@me")
     
-    async def request(self, route:Route, *args, **kwargs):
-        method = route.method
-        path = route.path
+    async def request(self, method:str, path:str, *args, **kwargs):
         headers = {
             "Authorization": f"Bot {self.token}"
         }
