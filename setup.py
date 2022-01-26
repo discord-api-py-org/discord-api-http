@@ -24,7 +24,7 @@ setuptools.setup(
     extras_require=extras,
     packages=packages,
     name="discord-api-types",
-    version="0.0.3",
+    version="0.0.4",
     author="DMS",
     author_email="masato190411@gmail.com",
     description="This is discord-api low wrapper.",
