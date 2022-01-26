@@ -3,6 +3,10 @@ import aiohttp
 import threading
 import asyncio
 import time
+try:
+    import ujson as json
+except ImportError:
+    import json
 
 class KeepAlive(threading.Thread):
     def __init__(self, *args, **kwargs):
@@ -63,7 +67,7 @@ class DiscordGateway:
         await self.send(payload)
         
     async def send(self, data:dict):
-        await self.ws.send_json(data)
+        await self.ws.send_json(data, dumps = json.dumps)
         
     async def catch_message(self):
         async for msg in self.ws:
@@ -76,7 +80,7 @@ class DiscordGateway:
         pass
                 
     async def event_catch(self, msg):
-        data = msg.json()
+        data = msg.json(loads=json.loads)
         self.sequence = data["s"]
         if data["op"] != 0:
             if data["op"] == 10:
