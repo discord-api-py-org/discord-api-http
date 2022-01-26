@@ -80,7 +80,7 @@ class DiscordGateway:
         pass
                 
     async def event_catch(self, msg):
-        data = msg.json(loads=json.loads)
+        data = msg.json(loads = json.loads)
         self.sequence = data["s"]
         if data["op"] != 0:
             if data["op"] == 10:
