@@ -9,13 +9,13 @@ except ImportError:
     import json
 
 class HttpClient:
-    def __init__(self, loop:asyncio.AbstractEventLoop = None, intents:int = 513, log:bool = False):
+    def __init__(self, loop:asyncio.AbstractEventLoop, intents:int = 513, log:bool = False):
         self.log = log
         self.intents = intents
         self.baseurl = "https://discord.com/api/v9"
-        self.loop = asyncio.get_event_loop() if loop is None else loop
+        self.loop = loop
         self.ws = None
-        self.session = ClientSession(loop = self.loop, json_serialize = json.dumps)
+        self.session = ClientSession(loop = loop, json_serialize = json.dumps)
 
     def print(self, name, content):
         if self.log is True:
