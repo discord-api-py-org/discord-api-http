@@ -40,23 +40,22 @@ class KeepAlive(threading.Thread):
                     pass
 
 class DiscordGateway:
-    def __init__(self, ws, intents, token):
+    def __init__(self, ws, token):
         self.ws = ws
         self.token = token
         self.closed = self.ws.closed
-        self.intents = kwargs.pop("intents", 513)
         
     @classmethod
     async def start_gateway(cls, ws, token, intents = 513):
         self = cls(ws, intents, token)
         return self
 
-    async def login(self):
+    async def login(self, intents):
         payload = {
             "op": 2,
             "d": {
                 "token": self.token,
-                "intents": self.intents,
+                "intents": intents,
                 "properties": {
                     "$os": sys.platform,
                     "$browser": "discord-api.py",
