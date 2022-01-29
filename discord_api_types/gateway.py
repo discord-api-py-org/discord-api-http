@@ -44,7 +44,7 @@ class DiscordGateway:
         self.ws = ws
         self.token = token
         self.closed = self.ws.closed
-        self.intents
+        self.intents = intents
         
     @classmethod
     async def start_gateway(cls, ws, token, intents = 513):
