@@ -40,7 +40,7 @@ class KeepAlive(threading.Thread):
                     pass
 
 class DiscordGateway:
-    def __init__(self, ws, token, intents:int = int):
+    def __init__(self, ws, token, intents:int = 513):
         self.ws = ws
         self.token = token
         self.closed = self.ws.closed
