@@ -7,7 +7,7 @@ def _requires_from_file(filename):
     return open(filename, encoding="utf8").read().splitlines()
 
 packages = [
-    "discord_api_types"
+    "discord_api_http"
 ]
 
 extras = {
@@ -23,7 +23,7 @@ setuptools.setup(
     },
     extras_require=extras,
     packages=packages,
-    name="discord-api-types",
+    name="discord-api-http",
     version="0.0.7",
     author="DMS",
     author_email="masato190411@gmail.com",
