@@ -41,11 +41,10 @@ class HttpClient:
         for t in range(5):
             async with self.session.request(method, self.baseurl + path, *args, **kwargs) as r:
                 if r.status == 429:
-                    data = await r.json()
-                    if data["global"] is True:
+                    if r.headers.get("X-RateLimit-Global")
                         raise ApiError("Now api is limit. Wait a minute please.")
                     else:
-                        await sleep(data["retry_after"])
+                        await sleep(int(r.headers["X-RateLimit-Reset-After"]))
                 elif r.status == 404:
                     raise ApiError("Not Found Error")
                 elif 300 > r.status >= 200:
