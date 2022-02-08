@@ -41,7 +41,7 @@ class HttpClient:
         for t in range(5):
             async with self.session.request(method, self.baseurl + path, *args, **kwargs) as r:
                 if r.status == 429:
-                    if r.headers.get("X-RateLimit-Global")
+                    if r.headers.get("X-RateLimit-Global"):
                         raise ApiError("Now api is limit. Wait a minute please.")
                     else:
                         await sleep(int(r.headers["X-RateLimit-Reset-After"]))
