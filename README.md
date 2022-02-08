@@ -1,4 +1,4 @@
-# discord-api-types
+# discord-api-http
 
 ## What is this?
 
