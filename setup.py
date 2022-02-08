@@ -30,7 +30,7 @@ setuptools.setup(
     description="This is discord-api low wrapper.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/discord-api-py-org/discord-api-types",
+    url="https://github.com/discord-api-py-org/discord-api-http",
     install_requires=_requires_from_file('rqs.txt'),
     classifiers=[
         "Programming Language :: Python :: 3.8",
