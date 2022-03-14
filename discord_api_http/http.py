@@ -12,7 +12,7 @@ class HttpClient:
     def __init__(self, loop:asyncio.AbstractEventLoop, intents:int = 513, log:bool = False):
         self.log = log
         self.intents = intents
-        self.baseurl = "https://discord.com/api/v9"
+        self.baseurl = "https://discord.com/api/v10"
         self.loop = loop
         self.ws = None
         self.session = ClientSession(loop = loop, json_serialize = json.dumps)
