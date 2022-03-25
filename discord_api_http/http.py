@@ -1,5 +1,5 @@
 from aiohttp import ClientSession
-from asyncio import get_event_loop, sleep
+from asyncio import get_event_loop, sleep, get_running_loop()
 from .gateway import DiscordGateway
 from .errors import ApiError
 import asyncio
@@ -9,13 +9,21 @@ except ImportError:
     import json
 
 class HttpClient:
-    def __init__(self, loop:asyncio.AbstractEventLoop, intents:int = 513, log:bool = False):
+    def __init__(self, *, loop=None, log=False):
         self.log = log
-        self.intents = intents
         self.baseurl = "https://discord.com/api/v10"
         self.loop = loop
         self.ws = None
-        self.session = ClientSession(loop = loop, json_serialize = json.dumps)
+        self.session = ClientSession(loop=loop,
+                                     json_serialize=json.dumps)
+        
+    async def __aenter__(self):
+        self.loop = get_running_loop()
+        return self
+    
+    async def __aexit__(self, *args, **kwargs):
+        if self.session is not None:
+            await self.session.close()
 
     def print(self, name, content):
         if self.log is True:
@@ -31,7 +39,19 @@ class HttpClient:
     async def login(self):
         return await self.request("GET", "/users/@me")
     
-    async def request(self, method:str, path:str, *args, **kwargs):
+    def get(self, path: str, *args, **kwargs):
+        return self.request("GET", path, *args, **kwargs)
+    
+    def post(self, path: str, *args, **kwargs):
+        return self.request("POST", *args, **kwargs)
+    
+    def delete(self, path: str, *args, **kwargs):
+        return self.request("DELETE", path, *args, **kwargs)
+    
+    def patch(self, path: str, *args, **kwargs):
+        return self.request("PATCH", path, *args, **kwargs)
+    
+    async def request(self, method: str, path: str, *args, **kwargs):
         headers = {
             "Authorization": f"Bot {self.token}"
         }
@@ -50,9 +70,5 @@ class HttpClient:
                 elif 300 > r.status >= 200:
                     return await self.json_or_text(r)
         
-    async def connect(self):
-        if self.ws is None:
-            self.ws = await DiscordGateway.start_gateway(self)
-            await self.ws.catch_message()
-            while not self.ws.closed:
-                await self.ws.catch_message()
+    async def ws_connect(self, url, *args, **kwargs):
+        return await self.session.ws_connect(url, *args, **kwargs)
