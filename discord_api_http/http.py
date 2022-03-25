@@ -9,7 +9,9 @@ except ImportError:
     import json
 
 class HttpClient:
-    def __init__(self, *, loop=None, log=False):
+    def __init__(self, *, token: str=None,
+                 loop=None, log: bool=False):
+        self.token = token
         self.log = log
         self.baseurl = "https://discord.com/api/v10"
         self.loop = loop
