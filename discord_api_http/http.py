@@ -71,6 +71,3 @@ class HttpClient:
                     raise ApiError("Not Found Error")
                 elif 300 > r.status >= 200:
                     return await self.json_or_text(r)
-        
-    async def ws_connect(self, url, *args, **kwargs):
-        return await self.session.ws_connect(url, *args, **kwargs)
