@@ -1,5 +1,5 @@
 from aiohttp import ClientSession
-from asyncio import get_event_loop, sleep, get_running_loop()
+from asyncio import get_event_loop, sleep, get_running_loop
 from .gateway import DiscordGateway
 from .errors import ApiError
 import asyncio
